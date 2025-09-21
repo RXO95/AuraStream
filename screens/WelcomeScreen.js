@@ -1,4 +1,4 @@
-// screens/WelcomeScreen.js
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { auth } from '../services/firebaseConfig'; // Import auth
@@ -6,7 +6,7 @@ import { auth } from '../services/firebaseConfig'; // Import auth
 export default function WelcomeScreen({ navigation }) {
   const [username, setUsername] = useState('');
 
-  // This effect runs when the screen loads to get the current user's name
+  
   useEffect(() => {
     if (auth.currentUser) {
       setUsername(auth.currentUser.displayName);
@@ -30,7 +30,7 @@ export default function WelcomeScreen({ navigation }) {
   );
 }
 
-// Styles remain the same
+
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: '#F8F9FA', },
     title: { fontSize: 32, fontWeight: 'bold', marginBottom: 10, textAlign: 'center' },

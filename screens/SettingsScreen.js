@@ -1,14 +1,14 @@
-// screens/SettingsScreen.js
+
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../context/ThemeContext';
-import { lightColors, darkColors } from '../styles/theme'; // Import your colors
+import { lightColors, darkColors } from '../styles/theme'; 
 import { useColorScheme } from 'react-native';
 
 export default function SettingsScreen({ navigation }) {
   const { themeMode, setThemeMode } = useContext(ThemeContext);
   
-  // Get the device's current system theme
+ 
   const systemTheme = useColorScheme();
   const theme = themeMode === 'auto' ? (systemTheme === 'dark' ? darkColors : lightColors) : (themeMode === 'dark' ? darkColors : lightColors);
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
       marginTop: 30,
       padding: 15,
       borderRadius: 10,
-      backgroundColor: '#007AFF', // Or use theme.userBubble
+      backgroundColor: '#007AFF', 
   },
   linkButtonText: {
       color: '#fff',

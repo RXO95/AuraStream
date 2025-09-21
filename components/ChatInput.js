@@ -1,20 +1,18 @@
-// components/ChatInput.js
-import React, { useState, useContext } from 'react'; // 1. Import useContext
+import React, { useState, useContext } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, useColorScheme } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { ThemeContext } from '../context/ThemeContext'; // 2. Import the ThemeContext
-import { lightColors, darkColors } from '../styles/theme'; // 3. Import the colors
+import { ThemeContext } from '../context/ThemeContext';
+import { lightColors, darkColors } from '../styles/theme';
 
-// The component no longer accepts 'theme' as a prop
 export default function ChatInput({ onSendMessage, loading }) {
   const [input, setInput] = useState("");
-
-  // 4. Add this block to get the theme from the global context
   const { themeMode } = useContext(ThemeContext);
   const systemTheme = useColorScheme();
-  const theme = themeMode === 'auto' 
-    ? (systemTheme === 'dark' ? darkColors : lightColors) 
-    : (themeMode === 'dark' ? darkColors : lightColors);
+  const theme = themeMode === 'auto' ? (systemTheme === 'dark' ? darkColors : lightColors) : (themeMode === 'dark' ? darkColors : lightColors);
+  
+  const handleVoiceInput = () => {
+      onSendMessage("This is a simulated voice message.");
+  };
 
   const handleSend = () => {
     if (!input.trim() || loading) return;
@@ -23,44 +21,35 @@ export default function ChatInput({ onSendMessage, loading }) {
   };
 
   return (
-    // Now the 'theme' variable exists and can be used here
     <View style={[styles.container, { backgroundColor: theme.background, borderTopColor: theme.botBubble }]}>
-      <TextInput
-        style={[styles.input, { backgroundColor: theme.inputBackground, color: theme.text }]}
-        placeholder="Type your message..."
-        placeholderTextColor={theme.timestamp}
-        value={input}
-        onChangeText={setInput}
-        multiline
-      />
-      <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading}>
-        <Ionicons name="send" size={24} color="white" />
-      </TouchableOpacity>
+      <View style={[styles.inputContainer, { backgroundColor: theme.inputBackground }]}>
+        <TextInput
+          style={[styles.input, { color: theme.text }]}
+          placeholder="Type a message..."
+          placeholderTextColor={theme.timestamp}
+          value={input}
+          onChangeText={setInput}
+          multiline
+        />
+        {/* Conditionally render Voice or Send button */}
+        {input.trim().length > 0 ? (
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={loading}>
+            <Ionicons name="arrow-up" size={24} color="white" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.voiceButton} onPress={handleVoiceInput}>
+            <Ionicons name="mic-outline" size={24} color={theme.text} />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flexDirection: 'row', 
-    padding: 10, 
-    alignItems: 'center', 
-    borderTopWidth: 1 
-  },
-  input: { 
-    flex: 1, 
-    borderRadius: 20, 
-    paddingHorizontal: 15, 
-    paddingVertical: 10, 
-    marginRight: 10, 
-    fontSize: 16 
-  },
-  sendButton: { 
-    backgroundColor: '#007AFF', 
-    borderRadius: 25, 
-    width: 50, 
-    height: 50, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
-  },
+  container: { padding: 10, borderTopWidth: 1 },
+  inputContainer: { flexDirection: 'row', alignItems: 'center', borderRadius: 25, paddingHorizontal: 8 },
+  input: { flex: 1, paddingVertical: 10, paddingHorizontal: 12, fontSize: 16 },
+  sendButton: { backgroundColor: '#007AFF', borderRadius: 20, width: 40, height: 40, justifyContent: 'center', alignItems: 'center', margin: 4 },
+  voiceButton: { padding: 10 },
 });
